@@ -1,5 +1,5 @@
 CC = g++ -std=c++11
-FLAGS = -g -Wall
+FLAGS = -g -Wall -Wno-reorder
 IPATH = -Isrc
 DEPENDS =
 SRCS = 
@@ -7,11 +7,16 @@ SRCS =
 ifdef MAKECMDGOALS
 	SRCS = $(MAKECMDGOALS).cpp
 	DEPENDS = $(MAKECMDGOALS).d
-	MAKECMDGOALS = src/$(MAKECMDGOALS).o
+	MAKECMDGOALS := src/$(MAKECMDGOALS).o PRNT
 else
 	SRCS = *.cpp src/*.cpp
 	DEPENDS = $(SRCS:.cpp=.d)
 endif
+
+.PHONY:PRNT
+
+PRNT:
+	echo $(MAKECMDGOALS)
 
 Zork:main.cpp
 	$(CC) $(IPATH) $(FLAGS) -o Zork $(SRCS)

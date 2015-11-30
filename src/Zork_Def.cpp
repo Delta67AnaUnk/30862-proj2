@@ -6,7 +6,7 @@
 
 using namespace std;
 
-list<string> WordParser(string &input)
+list<string> WordParser(const string &input)
 {
 	list<string> rtvl;
 	size_t found,pre;
@@ -22,7 +22,7 @@ list<string> WordParser(string &input)
 	return rtvl;
 }
 
-Action ActionParse(string& input)
+Action ActionParse(const string& input)
 {
 	list<string> str = WordParser(input);
 	Action rtvl;
@@ -52,14 +52,14 @@ Action ActionParse(string& input)
 	return rtvl;
 }
 
-Condition ConditionParser(string& obj,string& status)
+Condition ConditionParser(const string& obj,const string& status)
 {
 	return [this](){
 		return (ZorkMap.get(obj).getstatus())==status;
 	};
 }
 
-Condition ConditionParser(string& has,string& obj,string& owner)
+Condition ConditionParser(bool has,const string& obj,const string& owner)
 {
 	return [this](){
 		bool b = false;

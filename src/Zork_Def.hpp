@@ -6,12 +6,12 @@
 
 using namespace std;
 
-typedef function<void(string&)> Action;
+typedef function<void(const string&)> Action;
 typedef function<bool()> Condition;
 
-list<string> WordParser(string &input);
-Action ActionParser(string& input);
-Condition ConditionParser(string& obj,string& status);
-Condition ConditionParser(bool has,string& obj,string& owner);
+list<string> WordParser(const string &input);
+Action ActionParser(const string& input);
+Condition ConditionParser(const string& obj,const string& status);
+Condition ConditionParser(bool has,const string& obj,const string& owner);
 
 #endif

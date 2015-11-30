@@ -13,7 +13,7 @@ public:
 	Container(string& n,string& desc.string& status):
 	Object(n,desc,status);
 
-	void addAccept(Object& c) {accept.push_back(ref(c));}
+	void addAccept(Object& c) {accept.push_front(ref(c));}
 
 	void Add(Object& c);
 	void Delete();

@@ -12,21 +12,21 @@ using namespace std;
 class Trigger
 {
 public:
-	Trigger(string& com, string& prt,bool permenant):command(com),print(prt),type(permenant);
+	Trigger(string& com, string& prt,bool permenant):command(com),print(prt),type(permenant){}
 
-	void addAction(Action act){action.push_back(act);}
-	void addCondition(Condition cd){cond.push_back(cd);}
+	void addAction(Action act){action.push_front(act);}
+	void addCondition(Condition cd){cond.push_front(cd);}
 
 	const string& getCMD() const {return command;}
-	const bool isPerm() const {return perm;}
+	const bool isPerm() const {return type;}
 	const string& getprint() const {return print;}
 
-	bool run(string& input)
+	bool run(const string& input)
 	{
 		list<Condition>::iterator i;
 		// check if conditions meets
 		for(i=cond.begin();i!=cond.end();++i){
-			if(!i()){
+			if(!(*i)()){
 				return false;
 			}
 		}
@@ -34,7 +34,7 @@ public:
 		cout<<print<<endl;
 		list<Action>::iterator t;
 		for(t=action.begin();t!=action.end();++t){
-			action(input);
+			(*t)(input);
 		}
 		return true;
 	}
