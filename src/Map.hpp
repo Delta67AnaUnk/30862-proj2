@@ -10,9 +10,9 @@ using namespace std;
 class Map
 {
 public:
-	typedef map<string,ObjRef > map_table;
-	typedef pair<string,ObjRef > map_element;
-	static Map();
+	typedef map<string,Object> map_table;
+	typedef pair<string,Object> map_element;
+	Map();
 
 	Object& get(string& sth)
 	{
@@ -30,8 +30,11 @@ public:
 	void remove(string& name)
 	{obj.erase(name);}
 
+	void Win(string& s)
+	{cout<<"You found the exit!\nYou are safe now."<<endl;}
+
 private:
-	static map_table obj;
+	map_table obj;
 };
 
 
