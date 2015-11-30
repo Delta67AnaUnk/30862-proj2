@@ -48,7 +48,7 @@ void Container::Add(Object& c)
 		cout<<"You cannot put in this item"<<endl;
 		return;
 	}
-	item.push_back(ref(c));
+	item.push_front(ref(c));
 	c.Belong(*this);
 }
 

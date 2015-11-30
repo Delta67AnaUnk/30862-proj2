@@ -8,6 +8,7 @@
 #include "Room.hpp"
 #include <functional>
 #include "Map.hpp"
+<<<<<<< HEAD
 #include "Container"
  */
 #include <string>
@@ -19,6 +20,9 @@
 #include <map>
 #include <queue>
 #include "rapidxml/rapidxml.hpp"
+=======
+#include "Container.hpp"
+>>>>>>> Delta67AnaUnk/master
 
 using namespace std;
 using namespace rapidxml;

@@ -14,7 +14,7 @@ public:
 	Creature(string& n,string& desc, string& status):
 	Object(n,desc,status);
 
-	void addVul(Object& vul){vulner.push_back(ref(vul));}
+	void addVul(Object& vul){vulner.push_front(ref(vul));}
 
 	void addAttack(string& prt,
 	list<Condition>::iterator s1,

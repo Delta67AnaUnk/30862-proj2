@@ -17,7 +17,7 @@ class Object
 public:
 
 	Object(string& n,string& desc,string&status):
-	name(n),descrip(desc),status(status),check(false),handleid(maxhandle++);
+	name(n),descrip(desc),status(status),check(false),belong(ref(*this)),handleid(maxhandle++){}
 
 	bool operator==(const Object& comp)
 	{return handleid==comp.handleid;}
@@ -27,16 +27,16 @@ public:
 	const string& getdescrip() const{return descrip;}
 	const Object& getowner() const{return belong;}
 
-	void addTrigger(Trigger trig){tri.push_back(trig);}
+	void addTrigger(Trigger trig){tri.push_front(trig);}
 	void Belong(Object& c){belong=ref(c);};
-	void RemoveFrom(){belong = NULL;}
+	void RemoveFrom(){belong = ref(*this);}
 
 	void React();
 
 	void React(string& cmd);
 
 	virtual void Add(Object& c);
-	virtual void Delete(){belong = NULL;}
+	virtual void Delete(){belong = ref(*this);}
 	virtual void Update(string newstatus)
 	{status = newstatus;}
 
@@ -48,10 +48,11 @@ protected:
 	string status;
 	ObjectRef belong;// contained by Container or Room
 	list<Trigger> tri;
+	list<Trigger>::iterator def;
 	bool check;
 	int handleid;
 
-	static int maxhandle = 0;
-}
+	static int maxhandle;
+};
 
 #endif

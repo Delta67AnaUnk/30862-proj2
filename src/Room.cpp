@@ -43,11 +43,11 @@ void Room::Add(Object& c)
 		return;
 	}
 	if(string("Container")==typeid(c).name()){
-		cont.push_back(ref(c));
+		cont.push_front(ref(c));
 	}else if(string("Item")==typeid(c).name()){
-		item.push_back(ref(c));
+		item.push_front(ref(c));
 	}else if(string("Creature")==typeid(c).name()){
-		being.push_back(ref(c));
+		being.push_front(ref(c));
 	}
 	c.Belong(*this);
 }
