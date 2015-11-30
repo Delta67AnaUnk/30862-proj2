@@ -1,23 +1,19 @@
-#ifndef _ZORK_CREATURE_
-#define _ZORK_CREATURE_
+#include "Creature.hpp"
 
-#include "Object.hpp"
-#include <List>
-#include <functional>
-
-using namespace std;
-
-class Creature:public Object
+void Creature::addAttack(string& prt,
+	list<Condition>::iterator s1,
+	list<Condition>::iterator e1,
+	list<Action>::iterator s2,
+	list<Action>::iterator e2)
 {
-public:
-	Creature(string& n,string& desc, string& status):
-	Object(n,desc,status);
-
-	void addVul(Object& obj){vulner.push_back(obj);}
-
-private:
-	List<reference_wrapper<Object> > vulner;
-	List<auto> attack;
-};
-
-#endif
+	Trigger trig = Trigger("attack",prt,true);
+	list<Condition>::iterator i;
+	for(i=s1;i!=e1;++i){
+		trig.addCondition(*i);
+	}
+	list<Action>::iterator t;
+	for(t=s2;t!=e2;++t){
+		trig.addAction(*t);
+	}
+	addTrigger(trig);
+}

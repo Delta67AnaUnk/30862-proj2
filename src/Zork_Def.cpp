@@ -1,11 +1,10 @@
 #include "Zork_Def.hpp"
+#include "Zork_main.hpp"
 #include <list>
 #include "Object.hpp"
 #include "Map.hpp"
 
 using namespace std;
-
-Map ZorkMap;
 
 list<string> WordParser(string &input)
 {
@@ -25,25 +24,29 @@ list<string> WordParser(string &input)
 
 Action ActionParse(string& input)
 {
-	list<string> str = wordparser(input);
+	list<string> str = WordParser(input);
 	Action rtvl;
 	if(act=="Game Over"){
-		ZorkMap.Win();
-		return NULL;
+		return ZorkMap.Win;
 	}
 	Object& Obj = ZorkMap.get(str[1]);
 	if(str[0]=="Update"){
-		rtvl = [=](){
+		rtvl = [this](string& s){
 			Obj.Update(str[3];);
 		};
 	}else if(str[0]=="Add"){
-		rtvl = [=](){
+		rtvl = [this](string& s){
 			Object& owner = ZorkMap.get(str[3]);
 			owner.Add(Obj);
 		};
 	}else if(str[0]=="Delete"){
-		rtvl = [=](){
+		rtvl = [this](string& s){
 			Obj.Delete();
+		};
+	}else if(str[0]=="Remove"){
+		rtvl = [this](string& s){
+			Object& owner = ZorkMap.get(str[3]);
+			owner.Remove(Obj);
 		};
 	}
 	return rtvl;
@@ -51,14 +54,14 @@ Action ActionParse(string& input)
 
 Condition ConditionParser(string& obj,string& status)
 {
-	return [=](){
+	return [this](){
 		return (ZorkMap.get(obj).getstatus())==status;
 	};
 }
 
 Condition ConditionParser(string& has,string& obj,string& owner)
 {
-	return [=](){
+	return [this](){
 		bool b = false;
 		if(has=="yes") b==true;
 		Object Owner = ZorkMap.get(owner);

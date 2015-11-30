@@ -12,7 +12,7 @@ using namespace std;
 class Trigger
 {
 public:
-	Trigger(string& com, string& act, string& prt,bool permenant):command(com),action(act),print(prt),type(permenant);
+	Trigger(string& com, string& prt,bool permenant):command(com),print(prt),type(permenant);
 
 	void addAction(Action act){action.push_back(act);}
 	void addCondition(Condition cd){cond.push_back(cd);}
@@ -21,7 +21,7 @@ public:
 	const bool isPerm() const {return perm;}
 	const string& getprint() const {return print;}
 
-	bool run()
+	bool run(string& input)
 	{
 		list<Condition>::iterator i;
 		// check if conditions meets
@@ -34,13 +34,10 @@ public:
 		cout<<print<<endl;
 		list<Action>::iterator t;
 		for(t=action.begin();t!=action.end();++t){
-			action();
+			action(input);
 		}
 		return true;
 	}
-
-	void addAction(Action act){action.push_back(act);}
-	
 
 private:
 	bool type;
