@@ -14,12 +14,12 @@ public:
 	typedef pair<string,Object> map_element;
 	Map();
 
-	Object& get(string& sth)
+	Object& get(const string& sth) 
 	{
-		const map_table::iterator it;
+		map_table::iterator it;
 		it = obj.find(sth);
 		if(it==obj.end())
-			return NULL;
+			return NullObj;
 		else
 			return it->second;
 	}
@@ -30,7 +30,7 @@ public:
 	void remove(string& name)
 	{obj.erase(name);}
 
-	void Win(string& s)
+	void Win(const string& s)
 	{cout<<"You found the exit!\nYou are safe now."<<endl;}
 
 private:

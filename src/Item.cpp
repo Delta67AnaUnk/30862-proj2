@@ -3,17 +3,17 @@
 
 using namespace std;
 
-Item(string& n,string&desc, string& status,bool enable):
-Object(n,desc,status),turnon(enable)
+Item::Item(const string& name, const string& desc, const string& status,bool enable):
+Object(name,desc,status),turnon(enable)
 {
 	// Trigger for drop
 	Trigger drop = Trigger("drop",name+" is dropped",true);
 	drop.addCondition([this](){
 		return getowner()==Inventory;
 	});
-	drop.addAction([this](string& s){
+	drop.addAction([this](const string& s){
 		Inventory.Remove(*this);
-		CurRoomPtr->Add(*this)
+		CurRoomPtr->Add(*this);
 	});
 	addTrigger(drop);
 
@@ -22,8 +22,8 @@ Object(n,desc,status),turnon(enable)
 	put.addCondition([this](){
 		return getowner()==Inventory;
 	});
-	put.addAction([this](string& s){
-		list<string>s2 = WordParser(s);
+	put.addAction([this](const string& s){
+		vector<string>s2 = WordParser(s);
 		if(s2.size()<4){
 			cout<<"Not enough arguments"<<endl;
 			return;
@@ -38,7 +38,7 @@ Object(n,desc,status),turnon(enable)
 	addTrigger(put);
 }
 
-void addTurnon(string& prt,
+void Item::addTurnon(string& prt,
 	list<Action>::iterator s1,
 	list<Action>::iterator e1)
 

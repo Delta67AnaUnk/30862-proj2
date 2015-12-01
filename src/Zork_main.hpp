@@ -13,8 +13,8 @@ using namespace std;
 
 Map ZorkMap;
 
-Container Inventory;
-Room* CurRoomPtr;
+Container Inventory(emptystr,emptystr,emptystr);
+Room* CurRoomPtr = nullptr;
 
 Map loadMap(string& filename);
 

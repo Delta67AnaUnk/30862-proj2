@@ -12,7 +12,7 @@ using namespace std;
 class Trigger
 {
 public:
-	Trigger(string& com, string& prt,bool permenant):command(com),print(prt),type(permenant){}
+	Trigger(const string& com, const string& prt,bool permenant):command(com),print(prt),type(permenant){}
 
 	void addAction(Action act){action.push_front(act);}
 	void addCondition(Condition cd){cond.push_front(cd);}
