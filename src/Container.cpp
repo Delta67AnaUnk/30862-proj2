@@ -1,7 +1,7 @@
 #include "Container.hpp"
 #include "Trigger.hpp"
 #include "Zork_Def.hpp"
-#include "Zork_main.hpp"
+#include "Map.hpp"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ Object(n,desc,status)
 void Container::Add(Object& c)
 {
 	list<reference_wrapper<Item> >::iterator i;
-	if(c.getowner()!=Inventory){
+	if(c.getowner()!=ZorkMap.getInventory()){
 		cout<<"You do not have this item."<<endl;
 		return;
 	}

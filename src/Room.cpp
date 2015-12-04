@@ -1,7 +1,7 @@
 #include "Room.hpp"
 #include "Trigger.hpp"
 #include "Zork_Def.hpp"
-#include "Zork_main.hpp"
+#include "Map.hpp"
 
 using namespace std;
 
@@ -28,9 +28,9 @@ Object(n,desc,status),type(type)
 			return this->border[i].empty()==false;
 		});
 		trig.addAction([this,i](const string& s){
-			CurRoomPtr = &(static_cast<Room&>(ZorkMap.get(border[i])));
-			cout<<CurRoomPtr->getname()<<endl;
-			cout<<CurRoomPtr->getdescrip()<<endl;
+			ZorkMap.getCurrentRoom() = (static_cast<Room&>(ZorkMap.get(border[i])));
+			cout<<ZorkMap.getCurrentRoom().getname()<<endl;
+			cout<<ZorkMap.getCurrentRoom().getdescrip()<<endl;
 		});
 		addTrigger(trig);
 	}

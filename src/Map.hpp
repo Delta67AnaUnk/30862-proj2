@@ -3,6 +3,8 @@
 
 #include <functional>
 #include "Object.hpp"
+#include "Container.hpp"
+#include "Room.hpp"
 #include <map>
 
 using namespace std;
@@ -12,7 +14,7 @@ class Map
 public:
 	typedef map<string,Object> map_table;
 	typedef pair<string,Object> map_element;
-	Map();
+	Map(const string& filename);
 
 	Object& get(const string& sth) 
 	{
@@ -32,9 +34,23 @@ public:
 
 	void Win(const string& s)
 	{cout<<"You found the exit!\nYou are safe now."<<endl;}
+	
+	void Move(const string& nextroom)
+	{CurRoomPtr = ref(get(nextroom));}
+
+	Object& getCurrentRoom(){return CurRoomPtr.get();}
+	const Object& getCurrentRoom() const{return CurRoomPtr.get();}
+
+	Container& getInventory(){return Inventory;}
+	const Container& getInventory() const{return Inventory;}
+
+	void Run();
 
 private:
 	map_table obj;
+	reference_wrapper<Room> CurRoomPtr;
+	Container Inventory;
+
 };
 
 

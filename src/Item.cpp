@@ -1,5 +1,5 @@
 #include "Item.hpp"
-#include "Zork_main.hpp"
+#include "Map.hpp"
 
 using namespace std;
 
@@ -9,18 +9,18 @@ Object(name,desc,status),turnon(enable)
 	// Trigger for drop
 	Trigger drop = Trigger("drop",name+" is dropped",true);
 	drop.addCondition([this](){
-		return getowner()==Inventory;
+		return getowner()==ZorkMap.getInventory();
 	});
 	drop.addAction([this](const string& s){
-		Inventory.Remove(*this);
-		CurRoomPtr->Add(*this);
+		ZorkMap.getInventory().Remove(*this);
+		ZorkMap.getCurrentRoom().Add(*this);
 	});
 	addTrigger(drop);
 
 	// Trigger for put
 	Trigger put = Trigger("put",name+" is put",true);
 	put.addCondition([this](){
-		return getowner()==Inventory;
+		return getowner()==ZorkMap.getInventory();
 	});
 	put.addAction([this](const string& s){
 		vector<string>s2 = WordParser(s);
@@ -28,7 +28,7 @@ Object(name,desc,status),turnon(enable)
 			cout<<"Not enough arguments"<<endl;
 			return;
 		}
-		Inventory.Remove(*this);
+		ZorkMap.getInventory().Remove(*this);
 		if(string("Container")!=typeid(ZorkMap.get(s2[3])).name()){
 			cout<<"Not a container"<<endl;
 			return;
