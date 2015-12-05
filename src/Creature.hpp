@@ -11,8 +11,8 @@ using namespace std;
 class Creature:public Object
 {
 public:
-	Creature(const string& n,const string& desc,const string& status):
-	Object(n,desc,status){}
+	Creature(string& n,string& desc, string& status):
+	Object(n,desc,status);
 
 	void addVul(Object& vul){vulner.push_front(ref(vul));}
 

@@ -1,20 +1,20 @@
 #include "Zork_Def.hpp"
 #include "Zork_main.hpp"
-#include <vector>
+#include <list>
 #include "Object.hpp"
 #include "Map.hpp"
 
 using namespace std;
 
-vector<string> WordParser(const string &input)
+list<string> WordParser(const string &input)
 {
-	vector<string> rtvl;
+	list<string> rtvl;
 	size_t found,pre;
 	string tmp;
 	pre = 0;
 	found = input.find_first_of(' ');
 	while(found!=string::npos){
-		tmp = string(input,pre,found);
+		tmp = string(input+pre,found-pre);
 		rtvl.push_back(tmp);
 		pre = found;
 		found = input.find_first_of(' ',found+1);
@@ -22,35 +22,31 @@ vector<string> WordParser(const string &input)
 	return rtvl;
 }
 
-Action ActionParser(const string& input)
+Action ActionParse(const string& input)
 {
-	vector<string> str = WordParser(input);
+	list<string> str = WordParser(input);
 	Action rtvl;
 	if(act=="Game Over"){
 		return ZorkMap.Win;
 	}
-	Object& obj = ZorkMap.get(str[1]);
-	reference_wrapper<Object> Obj = ref(obj);
+	Object& Obj = ZorkMap.get(str[1]);
 	if(str[0]=="Update"){
-		string newstate = str[3];
-		rtvl = [Obj,newstate](const string& s){
-			Obj.get().Update(newstate);
+		rtvl = [this](string& s){
+			Obj.Update(str[3];);
 		};
 	}else if(str[0]=="Add"){
-		Object& owner = ZorkMap.get(str[3]);
-		reference_wrapper<Object> Owner = ref(owner);
-		rtvl = [Obj,Owner](const string& s){
-			Owner.get().Add(Obj);
+		rtvl = [this](string& s){
+			Object& owner = ZorkMap.get(str[3]);
+			owner.Add(Obj);
 		};
 	}else if(str[0]=="Delete"){
-		rtvl = [Obj](const string& s){
-			Obj.get().Delete();
+		rtvl = [this](string& s){
+			Obj.Delete();
 		};
 	}else if(str[0]=="Remove"){
-		Object& owner = ZorkMap.get(str[3]);
-		reference_wrapper<Object> Owner = ref(owner);
-		rtvl = [Obj,Owner](const string& s){
-			Owner.get().Remove(Obj);
+		rtvl = [this](string& s){
+			Object& owner = ZorkMap.get(str[3]);
+			owner.Remove(Obj);
 		};
 	}
 	return rtvl;
@@ -58,17 +54,18 @@ Action ActionParser(const string& input)
 
 Condition ConditionParser(const string& obj,const string& status)
 {
-	reference_wrapper<Object> Obj = ref(ZorkMap.get(obj));
-	return [Obj,status](){
-		return (Obj.get().getstatus())==status;
+	return [this](){
+		return (ZorkMap.get(obj).getstatus())==status;
 	};
 }
 
 Condition ConditionParser(bool has,const string& obj,const string& owner)
 {
-	reference_wrapper<Object> Obj = ref(ZorkMap.get(obj));
-	reference_wrapper<Object> Owner = ref(ZorkMap.get(owner));
-	return [Obj,Owner,has](){
-		return has^(Owner.get().Has(Obj.get()));
+	return [this](){
+		bool b = false;
+		if(has=="yes") b==true;
+		Object Owner = ZorkMap.get(owner);
+		Object Obj = ZorkMap.get(obj);
+		return b^(Owner.Has(Obj));
 	};
 }

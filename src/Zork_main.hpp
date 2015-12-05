@@ -2,25 +2,38 @@
 #define _ZORK_MAIN_
 
 
-#include "Object.hpp"
+#include <list>
+/*#include "Object.hpp"
 #include "Zork_Def.hpp"
 #include "Room.hpp"
 #include <functional>
 #include "Map.hpp"
-#include "Container.hpp"
+<<<<<<< HEAD
+#include "Container"
+ */
 #include <string>
+#include <stdio.h>
 #include <iostream>
 
+#include <iterator>
+#include <vector>
+#include <map>
+#include <queue>
+#include "rapidxml/rapidxml.hpp"
+=======
+#include "Container.hpp"
+>>>>>>> Delta67AnaUnk/master
 
 using namespace std;
 using namespace rapidxml;
 
 
-Container Inventory(emptystr,emptystr,emptystr);
-Room* CurRoomPtr = nullptr;
-
+/*
 Map ZorkMap;
-
+Container Inventory;
+Room* CurRoomPtr;
+Map loadMap(string& filename);
+*/
 class Game {
 public:
     
