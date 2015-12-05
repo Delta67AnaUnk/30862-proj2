@@ -2,6 +2,9 @@
 #define _ZORK_ROOM_
 
 #include "Object.hpp"
+#include "Container.hpp"
+#include "Item.hpp"
+#include "Creature.hpp"
 #include <functional>
 #include <list>
 
@@ -10,10 +13,10 @@ using namespace std;
 class Room:public Object
 {
 public:
-	Room(string& n,string& desc,string& status, string& type):
+	Room(const string& n,const string& desc,const string& status, const string& type);
 
 	void addBorder(string& rm,int dir){border[dir] = rm;}
-	void removeBorder(int dir){border[dir] = NULL;}
+	void removeBorder(int dir){border[dir].clear();}
 
 	static int Border(char c){
 		switch(c){
@@ -31,7 +34,7 @@ public:
 
 	void Add(Object& c);
 	void Delete();
-	bool Has(Object& c) {return c.getowner()==*this;}
+	bool Has(const Object& c) {return c.getowner()==*this;}
 	void Remove(Object& c);
 
 private:

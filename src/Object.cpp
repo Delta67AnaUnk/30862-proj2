@@ -39,3 +39,4 @@ void Object::React(string& cmd)
 	}
 	if(check)React();
 }
+
