@@ -23,6 +23,13 @@ public:
 	bool Has(const Object& c) {return c.getowner()==*this;}
 	void Remove(Object& c);
 
+	void PrintItem() {
+		list< reference_wrapper<Item> >::iterator it;
+		cout<< name+" Has:\n" <<endl;
+		for(it=item.begin();it!=item.end();++it){
+			cout<< it->get().getname()<<endl;
+		}
+	}
 private:
 	list< reference_wrapper<Item> > item;
 	list< reference_wrapper<Item> > accept;

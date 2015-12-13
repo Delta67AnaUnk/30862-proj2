@@ -1,5 +1,6 @@
 #include "Item.hpp"
 #include "Map.hpp"
+#include "main.hpp"
 
 using namespace std;
 
@@ -9,18 +10,18 @@ Object(name,desc,status),turnon(enable)
 	// Trigger for drop
 	Trigger drop = Trigger("drop",name+" is dropped",true);
 	drop.addCondition([this](){
-		return getowner()==ZorkMap.getInventory();
+		return getowner()==ZorkMap->getInventory();
 	});
 	drop.addAction([this](const string& s){
-		ZorkMap.getInventory().Remove(*this);
-		ZorkMap.getCurrentRoom().Add(*this);
+		ZorkMap->getInventory().Remove(*this);
+		ZorkMap->getCurrentRoom().Add(*this);
 	});
 	addTrigger(drop);
 
 	// Trigger for put
 	Trigger put = Trigger("put",name+" is put",true);
 	put.addCondition([this](){
-		return getowner()==ZorkMap.getInventory();
+		return getowner()==ZorkMap->getInventory();
 	});
 	put.addAction([this](const string& s){
 		vector<string>s2 = WordParser(s);
@@ -28,17 +29,18 @@ Object(name,desc,status),turnon(enable)
 			cout<<"Not enough arguments"<<endl;
 			return;
 		}
-		ZorkMap.getInventory().Remove(*this);
-		if(string("Container")!=typeid(ZorkMap.get(s2[3])).name()){
+		ZorkMap->getInventory().Remove(*this);
+		if(string("Container")!=typeid(ZorkMap->get(s2[3])).name()){
 			cout<<"Not a container"<<endl;
 			return;
 		}
-		ZorkMap.get(s2[3]).Add(*this);
+		ZorkMap->get(s2[3]).Add(*this);
 	});
 	addTrigger(put);
+	defaultEvents = tri.begin();
 }
 
-void Item::addTurnon(string& prt,
+void Item::addTurnon(const string& prt,
 	list<Action>::iterator s1,
 	list<Action>::iterator e1)
 
@@ -54,4 +56,5 @@ void Item::addTurnon(string& prt,
 		}
 		addTrigger(trig);
 	}
+	defaultEvents = tri.begin();
 }

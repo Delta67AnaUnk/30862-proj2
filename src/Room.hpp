@@ -32,10 +32,14 @@ public:
 		return -1;
 	}
 
-	void Add(Object& c);
+	void Add(Item& c);
+	void Add(Container& c);
+	void Add(Creature& c);
 	void Delete();
 	bool Has(const Object& c) {return c.getowner()==*this;}
-	void Remove(Object& c);
+	void Remove(Item& c);
+	void Remove(Container& c);
+	void Remove(Creature& c);
 
 private:
 	string type;

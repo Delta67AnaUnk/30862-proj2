@@ -7,20 +7,21 @@
 //
 
 #include <iostream>
-#include "Zork_main.hpp"
+#include "Map.hpp"
+#include "main.hpp"
 
 using namespace std;
 
-int main(void)
+int main(int argc, char**argv)
 {
     cout << "xml opening" << endl;
-    Game * game = new Game("rapidxml/sample.xml");
-    
-    if(game->gameReady) {
-        cout << "Game starting" << endl;
-        game->startGame();
+    string filename = argv[1];
+    ZorkMap = new Map();
+    ZorkMap->loader(filename);
+
+    while(ZorkMap->isRunning()){
+    	ZorkMap->Run();
     }
     
-    delete game;
     return 0;
 }

@@ -35,17 +35,15 @@ public:
 	void Belong(Object& c){belong=ref(c);};
 	void RemoveFrom(){belong = ref(*this);}
 
-	void React();
+	void React(const string& cmd = "");
 
-	void React(string& cmd);
-
-	virtual void Add(Object& c);
+	virtual void Add(Object& c){}
 	virtual void Delete(){belong = ref(*this);}
 	virtual void Update(string newstatus)
 	{status = newstatus;}
 
 	virtual bool Has(const Object& c){return false;}
-	virtual void Remove(Object& c);
+	virtual void Remove(Object& c){}
 protected:
 	string name;
 	string descrip;
@@ -59,7 +57,5 @@ protected:
 	static int maxhandle;
 };
 
-static string emptystr;
-Object NullObj(emptystr,emptystr,emptystr);
 
 #endif

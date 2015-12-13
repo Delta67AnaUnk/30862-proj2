@@ -25,6 +25,8 @@ public:
 	{
 		list<Condition>::iterator i;
 		// check if conditions meets
+		if(command.find(input) == string::npos)
+			return false;
 		for(i=cond.begin();i!=cond.end();++i){
 			if(!(*i)()){
 				return false;

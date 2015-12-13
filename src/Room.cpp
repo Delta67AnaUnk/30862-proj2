@@ -2,6 +2,7 @@
 #include "Trigger.hpp"
 #include "Zork_Def.hpp"
 #include "Map.hpp"
+#include "main.hpp"
 
 using namespace std;
 
@@ -27,31 +28,36 @@ Object(n,desc,status),type(type)
 		trig.addCondition([this,i]()->bool{
 			return this->border[i].empty()==false;
 		});
-		trig.addAction([this,i](const string& s){
-			ZorkMap.getCurrentRoom() = (static_cast<Room&>(ZorkMap.get(border[i])));
-			cout<<ZorkMap.getCurrentRoom().getname()<<endl;
-			cout<<ZorkMap.getCurrentRoom().getdescrip()<<endl;
+		trig.addAction([this,i,ZorkMap](const string& s){
+			ZorkMap->Move(border[i]);
 		});
 		addTrigger(trig);
 	}
+	defaultEvents = tri.begin();
 }
 
-void Room::Add(Object& c)
+void Room::Add(Item& c)
 {
-	if(c.getowner()!=Inventory){
+	if(c.getowner()!=ZorkMap->getInventory()){
 		cout<<"You do not have this item."<<endl;
 		return;
 	}
-	if(string("Container")==typeid(c).name()){
-		reference_wrapper<Container> wp = ref(static_cast<Container&>(c));
-		cont.push_front(wp);
-	}else if(string("Item")==typeid(c).name()){
-		reference_wrapper<Item> wp = ref(static_cast<Item&>(c));
-		item.push_front(wp);
-	}else if(string("Creature")==typeid(c).name()){
-		reference_wrapper<Creature> wp = ref(static_cast<Creature&>(c));
-		being.push_front(wp);
-	}
+	reference_wrapper<Item> wp = ref(c);
+	item.push_front(wp);
+	c.Belong(*this);
+}
+
+void Room::Add(Container& c)
+{
+	reference_wrapper<Container> wp = ref(c);
+	cont.push_front(wp);
+	c.Belong(*this);
+}
+
+void Room::Add(Creature& c)
+{
+	reference_wrapper<Creature> wp = ref(c);
+	being.push_front(wp);
 	c.Belong(*this);
 }
 
@@ -60,33 +66,41 @@ void Room::Delete()
 	int i = 0;
 	for(i = 0;i<4;i++){
 		if(!border[i].empty()){
-			Room& rm = (Room&)ZorkMap.get(border[i]);
+			Room& rm = (Room&)ZorkMap->get(border[i]);
 			rm.removeBorder((i+2)%4);
 		}
 	}
 }
 
-void Room::Remove(Object& c)
+void Room::Remove(Item& c)
 {
 	if(!Has(c)) return;
-	if(string("Container")==typeid(c).name()){
-		decltype(cont)::iterator i;
-		for(i=cont.begin();i!=cont.end();++i){
-			if(c==*i) break;
-		}
-		cont.erase(i);
-	}else if(string("Item")==typeid(c).name()){
-		decltype(item)::iterator i;
-		for(i=item.begin();i!=item.end();++i){
-			if(c==*i) break;
-		}
-		item.erase(i);
-	}else if(string("Creature")==typeid(c).name()){
-		decltype(being)::iterator i;
-		for(i=being.begin();i!=being.end();++i){
-			if(c==*i) break;
-		}
-		being.erase(i);
+	decltype(item)::iterator i;
+	for(i=item.begin();i!=item.end();++i){
+		if(c==i->get()) break;
 	}
+	item.erase(i);
+	c.RemoveFrom();
+}
+
+void Room::Remove(Container& c)
+{
+	if(!Has(c)) return;
+	decltype(cont)::iterator i;
+	for(i=cont.begin();i!=cont.end();++i){
+		if(c==i->get()) break;
+	}
+	cont.erase(i);
+	c.RemoveFrom();
+}
+
+void Room::Remove(Creature& c)
+{
+	if(!Has(c)) return;
+	decltype(being)::iterator i;
+	for(i=being.begin();i!=being.end();++i){
+		if(c==i->get()) break;
+	}
+	being.erase(i);
 	c.RemoveFrom();
 }

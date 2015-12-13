@@ -14,4 +14,6 @@ Action ActionParser(const string& input);
 Condition ConditionParser(const string& obj,const string& status);
 Condition ConditionParser(bool has,const string& obj,const string& owner);
 
+void CommandParser(const string&);
+
 #endif

@@ -16,4 +16,5 @@ void Creature::addAttack(string& prt,
 		trig.addAction(*t);
 	}
 	addTrigger(trig);
+	defaultEvents = tri.begin();
 }

@@ -2,19 +2,20 @@
 #include "Trigger.hpp"
 #include "Zork_Def.hpp"
 #include "Map.hpp"
+#include "main.hpp"
 
 using namespace std;
 
 Container::Container(const string& n,const string& desc, const string& status):
 Object(n,desc,status)
 {
-	Trigger trig = Trigger(NULL,name+" is locked",true);
+	Trigger trig = Trigger("open",name+" is locked",true);
 	trig.addCondition([this](){
 		return this->status=="locked";
 	});
 	addTrigger(trig);
 
-	trig = Trigger(NULL,name+" is opened",true);
+	trig = Trigger("open",name+" is opened",true);
 	trig.addCondition([this](){
 		return (this->status!="locked");
 	});
@@ -26,23 +27,24 @@ Object(n,desc,status)
 		cout<<"It contains:"<<endl;
 		list<reference_wrapper<Item> >::iterator i;
 		for(i=item.begin();i!=item.end();++i){
-			Object& tmp = *i;
+			Object& tmp = i->get();
 			cout<<tmp.getname()<<endl;
 			getowner().Add(tmp);
 		}
 	});
 	addTrigger(trig);
+	defaultEvents = tri.begin();
 }
 
 void Container::Add(Object& c)
 {
 	list<reference_wrapper<Item> >::iterator i;
-	if(c.getowner()!=ZorkMap.getInventory()){
+	if(c.getowner()!=ZorkMap->getInventory()){
 		cout<<"You do not have this item."<<endl;
 		return;
 	}
 	for(i=accept.begin();i!=accept.end();++i){
-		if(c==(*i)) break;
+		if(c==(i->get())) break;
 	}
 	if(i==accept.end()){
 		cout<<"You cannot put in this item"<<endl;
@@ -57,7 +59,7 @@ void Container::Delete()
 {
 	list<reference_wrapper<Item> >::iterator i;
 	for(i=item.begin();i!=item.end();++i){
-		Object& obj = *i;
+		Object& obj = i->get();
 		getowner().Add(obj);
 		obj.Belong(getowner());
 	}
@@ -70,7 +72,7 @@ void Container::Remove(Object& c)
 	c.Belong(wp);
 	list<reference_wrapper<Item> >::iterator i;
 	for(i=item.begin();i!=item.end();++i){
-		if(c==(*i)) break;
+		if(c==(i->get())) break;
 	}
 	item.erase(i);
 }

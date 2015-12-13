@@ -12,7 +12,7 @@ class Item:public Object
 public:
 	Item(const string& n, const string& desc, const string& status,bool enable);
 
-	void addTurnon(string& prt,
+	void addTurnon(const string& prt,
 	list<Action>::iterator s1,
 	list<Action>::iterator e1);
 
